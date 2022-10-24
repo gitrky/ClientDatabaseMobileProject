@@ -1,0 +1,446 @@
+ScreenManager:
+    LoginScreen:
+    CreateScreen:
+    MenuScreen:
+    ClientsList:
+    AddClientScreen:
+    SendMessage:
+    Setting:
+
+<LoginScreen>:
+    name:"login"
+    passw:passw
+    email:email
+    MDScreen :
+        md_bg_color: [35/255,49/255,48/255,1]
+        MDCard :
+            size_hint : None,None
+            size : 320,425
+            pos_hint : {"center_x":.5,"center_y":.5}
+            elevation : 15
+            md_bg_color : [35/255,59/255,54/255,1]
+            padding : 20
+            spacing : 30
+            orientation : "vertical"
+            # Adding items to the card
+            BoxLayout:
+                orientation : "vertical"
+                Image:
+                    source:'mylogo.png'
+                    size_hint_y:None
+
+            MDTextFieldRound :
+                id:email
+                hint_text : "Email"
+                icon_right : "account"
+                size_hint_x : None
+                width : 220
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+            MDTextFieldRound :
+                id:passw
+                hint_text : "Şifre"
+                icon_right : "eye-off"
+                size_hint_x : None
+                width : 220
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+                password : True
+            MDRoundFlatButton :
+                text : 'Giriş'
+                pos_hint : {"center_x":.5}
+                font_size : 15
+                on_press: root.loginBtn()
+            MDRoundFlatButton :
+                text : 'Kaydol'
+                pos_hint : {"center_x":.5}
+                font_size : 15
+                on_press: root.manager.current = 'create'
+            Widget :
+                size_hint_y : None
+                height : 10
+
+<CreateScreen>
+    name:"create"
+    email:email
+    n:n
+    passw:passw
+    passw2:passw2
+    MDScreen :
+        md_bg_color: [35/255,49/255,48/255,1]
+        MDCard :
+            orientation : 'vertical'
+            size_hint : None,None
+            size : 320,510
+            pos_hint : {"center_x":.5,"center_y":.5}
+            elevation : 15
+            md_bg_color : [35/255,59/255,54/255,1]
+            padding : 20
+            spacing : 30
+            BoxLayout:
+                orientation : "vertical"
+                Image:
+                    source:'mylogo.png'
+                    size_hint_y:None
+            MDTextFieldRound :
+                id:n
+                hint_text : "İsim"
+                size_hint_x : None
+                icon_right : "account"
+                width : 230
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+            MDTextFieldRound :
+                id:email
+                hint_text : "Email"
+                size_hint_x : None
+                icon_right : "account"
+                width : 230
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+            MDTextFieldRound :
+                id:passw
+                hint_text : "Şifre"
+                password : True
+                size_hint_x : None
+                icon_right : "eye-off"
+                width : 230
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+            MDTextFieldRound :
+                id:passw2
+                hint_text : "Şifreyi onayla"
+                size_hint_x : None
+                password : True
+                icon_right : "eye-off"
+                width : 230
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+
+            MDRoundFlatButton :
+                text : "Kaydol"
+                font_size : 15
+                pos_hint : {"center_x":.5}
+                theme_text_color : "Custom"
+                on_press: root.createAccount()
+            MDRoundFlatButton :
+                text : "Geri"
+                font_size : 15
+                pos_hint : {"left_x":.5}
+                theme_text_color : "Custom"
+                on_press: root.manager.current = 'login'
+<MenuScreen>:
+    name: 'menu'
+    NavigationLayout:
+        ScreenManager:
+            Screen:
+                BoxLayout:
+                    orientation : "vertical"
+                    MDToolbar:
+                        title: "Client "
+                        md_bg_color : [35/255,59/255,54/255,1]
+                        left_action_items:[['menu', lambda x: nav_drawer.toggle_nav_drawer()]]
+                        elevation:10
+                    MDLabel:
+                        text :" "
+                        halign:"center"
+                        pos_hint: {"center_x": .5, "center_y": 1.8}
+
+                    MDIcon:
+                        halign: "center"
+                        icon:"mylogo.png"
+
+                        pos_hint: {"center_x": .5,"top":0.7}
+
+                    MDLabel:
+                        text : ""
+                        halign:"center"
+                        pos_hint: {"center_x": .5, "center_y": 1.8}
+
+        MDNavigationDrawer:
+            id:nav_drawer
+            BoxLayout:
+                orientation : "vertical"
+                md_bg_color : [35/255,59/255,54/255,1]
+                Image:
+                    source:'mylogo.png'
+                    size_hint_y:None
+                ScrollView:
+                    MDList:
+                        OneLineIconListItem:
+                            on_press:root.addClient()
+                            text:'Müşteri ekle'
+                            IconLeftWidget:
+                                icon:'plus'
+                        OneLineIconListItem:
+                            on_press:root.clientList()
+                            text:'Müşteri listesi'
+                            IconLeftWidget:
+                                icon:'checkbook'
+                        OneLineIconListItem:
+                            text:'Bilgilendirme'
+                            on_press:root.send()
+                            IconLeftWidget:
+                                icon:'email'
+                        OneLineIconListItem:
+                            text:'Ayarlar'
+                            on_press:root.settings()
+                            IconLeftWidget:
+                                icon:'settings'
+                        OneLineIconListItem:
+                            text:'Çıkış'
+                            on_press:root.logout()
+                            IconLeftWidget:
+                                icon:'logout'
+
+<AddClientScreen>:
+    name:"add"
+    email:email
+    n:n
+    surname:surname
+    tcno:tcno
+    telno:telno
+    MDScreen :
+        md_bg_color: [35/255,49/255,48/255,1]
+        MDCard :
+            orientation : 'vertical'
+            size_hint : None,None
+            size : 300,500
+            pos_hint : {"center_x":.5,"center_y":.5}
+            elevation : 15
+            md_bg_color : [35/255,59/255,54/255,1]
+            padding : 20
+            spacing : 20
+            BoxLayout:
+                orientation : "vertical"
+                Image:
+                    source:'mylogo.png'
+                    size_hint_y:None
+            MDTextFieldRound :
+                id:n
+                hint_text : "İsim"
+                icon_right : "account"
+                size_hint_x : None
+                width : 220
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+            MDTextFieldRound :
+                id:surname
+                hint_text : "Soyisim"
+                icon_right : "account"
+                size_hint_x : None
+                width : 220
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+            MDTextFieldRound :
+                id:email
+                hint_text : "Email"
+                icon_right : "mail"
+                size_hint_x : None
+                width : 220
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+            MDTextFieldRound :
+                id:tcno
+                hint_text : "TC Numara"
+                icon_right : "numeric"
+                size_hint_x : None
+                width : 220
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+            MDTextFieldRound :
+                id:telno
+                hint_text : "Tel Numara"
+                icon_right : "phone"
+                size_hint_x : None
+                width : 220
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+            MDRoundFlatButton :
+                text : "Kaydet"
+                font_size : 15
+                pos_hint : {"center_x":.5}
+                theme_text_color : "Custom"
+
+                on_press: root.submit()
+            MDRoundFlatButton :
+                text : "Geri"
+                font_size : 15
+                pos_hint : {"left_x":.4}
+                theme_text_color : "Custom"
+
+                on_press: root.manager.current = 'menu'
+
+<SendMessage>:
+    name:"message"
+    to:to
+    subject:subject
+    text:text
+    MDScreen :
+        md_bg_color: [35/255,49/255,48/255,1]
+        MDCard :
+            orientation : 'vertical'
+            size_hint : None,None
+            size : 300,500
+            pos_hint : {"center_x":.5,"center_y":.5}
+            elevation : 15
+            md_bg_color : [35/255,59/255,54/255,1]
+            padding : 20
+            spacing : 30
+            BoxLayout:
+                orientation : "vertical"
+                Image:
+                    source:'mylogo.png'
+                    size_hint_y:None
+
+            MDTextFieldRound :
+                id:to
+                hint_text : "Kime"
+                size_hint_x : None
+                width : 230
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : 0, 0, 0, .4
+            MDTextFieldRound :
+                id:subject
+                hint_text : "Konu"
+                size_hint_x : None
+                width : 230
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : 0, 0, 0, .4
+            MDTextField:
+                id:text
+                multiline:True
+                hint_text: "İçerik"
+                color_mode: 'custom'
+                mode: "fill"
+                fill_color: 0, 0, 0, .4
+
+            MDRoundFlatButton :
+                text : "Gönder"
+                font_size : 15
+                pos_hint : {"center_x":.5}
+                theme_text_color : "Custom"
+                text_color : [0,0,0,1]
+                on_press: root.button()
+            MDRoundFlatButton :
+                text : "Geri"
+                font_size : 15
+                pos_hint : {"left_x":.5}
+                theme_text_color : "Custom"
+                text_color : [0,0,0,1]
+                on_press: root.manager.current = 'menu'
+
+<Setting>:
+    name:"set"
+    n:n
+    email:email
+    password:password
+    MDScreen :
+        md_bg_color: [35/255,49/255,48/255,1]
+        MDCard :
+            orientation : 'vertical'
+            size_hint : None,None
+            size : 300,500
+            pos_hint : {"center_x":.5,"center_y":.5}
+            elevation : 15
+            md_bg_color : [35/255,59/255,54/255,1]
+            padding : 20
+            spacing : 20
+            BoxLayout:
+                orientation : "vertical"
+                Image:
+                    source:'mylogo.png'
+                    size_hint_y:None
+            MDLabel :
+                id:n
+                size_hint_x : None
+                width : 220
+                font_size : 20
+                pos_hint : {"center_x":.5}
+
+            MDTextFieldRound :
+                id:password
+                hint_text : "yeni şifre"
+                icon_right : "eye-off"
+                password : True
+                size_hint_x : None
+                width : 220
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+            MDRoundFlatButton :
+                text : "Kaydet"
+                font_size : 15
+                pos_hint : {"center_x":.5}
+                theme_text_color : "Custom"
+                text_color : [0,0,0,1]
+                on_press: root.on_arrange_passw()
+            MDTextFieldRound :
+                id:email
+                hint_text : "yeni email"
+                icon_right : "mail"
+
+                size_hint_x : None
+                width : 220
+                font_size : 20
+                pos_hint : {"center_x":.5}
+                color_active : [1,1,1,1]
+            MDRoundFlatButton :
+                text : "Kaydet "
+                font_size : 15
+                pos_hint : {"center_x":.5}
+                theme_text_color : "Custom"
+                text_color : [0,0,0,1]
+                on_press: root.on_arrange_email()
+            MDRoundFlatButton :
+                text : "Geri"
+                font_size : 15
+                pos_hint : {"left_x":.5}
+                theme_text_color : "Custom"
+                text_color : [0,0,0,1]
+                on_press: root.manager.current = 'menu'
+
+
+<ClientsList>:
+    name:'list'
+    BoxLayout:
+        orientation:'vertical'
+        MDToolbar:
+            title: "Müşteri listesi"
+            md_bg_color : [35/255,59/255,54/255,1]
+        ScrollView:
+            MDList:
+                id: container
+
+        BoxLayout:
+            size_hint:(1,0.15)
+            MDToolbar:
+                md_bg_color : [35/255,59/255,54/255,1]
+                MDRoundFlatButton :
+                    text : "Geri"
+                    font_size : 15
+                    pos_hint : {"center_x":.45,"center_y":.5}
+                    theme_text_color : "Custom"
+                    on_press: root.manager.current = 'menu'
+
+
+
+
+
+
+
+
+
